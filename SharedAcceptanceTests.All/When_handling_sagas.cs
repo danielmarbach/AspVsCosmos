@@ -57,7 +57,7 @@ namespace NServiceBus.AcceptanceTests
             await Scenario.Define<Context>()
                 .WithEndpoint<EndpointWithASaga>()
                 .Done(c => c.IsDone)
-                .Run();
+                .Run(TimeSpan.FromMinutes(5));
         }
 
         public class Context : ScenarioContext
