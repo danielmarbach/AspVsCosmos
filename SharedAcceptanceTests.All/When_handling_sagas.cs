@@ -1,4 +1,6 @@
-﻿namespace NServiceBus.AcceptanceTests
+﻿using System.IO;
+
+namespace NServiceBus.AcceptanceTests
 {
     using System;
     using System.Threading.Tasks;
@@ -14,6 +16,14 @@
         [SetUp]
         public async Task Setup()
         {
+            var testRunId = TestContext.CurrentContext.Test.ID;
+            var tempDir = Environment.OSVersion.Platform == PlatformID.Win32NT ? @"c:\temp" : Path.GetTempPath();
+            var storageDir = Path.Combine(tempDir, testRunId);
+            if (Directory.Exists(storageDir))
+            {
+                Directory.Delete(storageDir, true);
+            }
+
             await Scenario.Define<Context>()
                 .WithEndpoint<EndpointWithASaga>((b) =>
                 {
@@ -54,6 +64,7 @@
         {
             private long counter;
             public bool Seeded { get; set; }
+            public long NumberOfSagasCompleted => Interlocked.Read(ref counter);
             public bool IsDone => Interlocked.Read(ref counter) >= NumberOfSagas;
 
             public void Done()
