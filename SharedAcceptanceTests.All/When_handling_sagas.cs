@@ -11,7 +11,7 @@ namespace NServiceBus.AcceptanceTests
 
     public class When_handling_sagas : NServiceBusAcceptanceTest
     {
-        private const int NumberOfSagas = 10;
+        private const int NumberOfSagas = 100;
 
         [SetUp]
         public async Task Setup()
@@ -79,6 +79,7 @@ namespace NServiceBus.AcceptanceTests
             {
                 EndpointSetup<DefaultServer>(config =>
                 {
+                    config.LimitMessageProcessingConcurrencyTo(10);
                 });
             }
 
