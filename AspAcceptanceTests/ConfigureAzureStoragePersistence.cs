@@ -9,7 +9,7 @@ public class ConfigureEndpointAzureStoragePersistence : IConfigureEndpointTestEx
 
     public Task Configure(string endpointName, EndpointConfiguration configuration, RunSettings settings, PublisherMetadata publisherMetadata)
     {
-        configuration.UsePersistence<AzureStoragePersistence, StorageType.Sagas>().ConnectionString(ConnectionString);
+        configuration.UsePersistence<AzureTablePersistence, StorageType.Sagas>().ConnectionString(ConnectionString);
 
         return Task.FromResult(0);
     }
